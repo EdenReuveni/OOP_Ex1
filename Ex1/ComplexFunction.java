@@ -132,7 +132,7 @@ public class ComplexFunction implements complex_function{
 		catch (Exception e) {
 			System.out.println("ERR left function should not be null");
 		}
-		return this.leftFunc;
+		return this.leftFunc.copy();
 	}
 	/** returns the right side of the complex function - this side might not exists (aka equals null).
 	 * @return a function representing the left side of this complex funcation
@@ -153,7 +153,7 @@ public class ComplexFunction implements complex_function{
 		catch (Exception e) {
 			System.out.println("ERR right function should be null");
 		}
-		return this.rightFunc;
+		return this.rightFunc.copy();
 	}
 	/**
 	 * The complex_function oparation: plus, mul, div, max, min, comp
@@ -192,9 +192,41 @@ public class ComplexFunction implements complex_function{
 	}
 	@Override
 	public function initFromString(String s) {
-		// TODO Auto-generated method stub
-		return null;
+		int counterForStart=0, counterForEnd=0, CounterForComma=0;
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i)=='(')
+				counterForStart++;
+			if (s.charAt(i)==')')
+				counterForEnd++;
+			if (s.charAt(i)==',')
+				CounterForComma++;
+		}
+		try {
+		if (counterForEnd>counterForStart || counterForStart>counterForEnd) {
+			throw new RuntimeException("ERR the expretion is invalid");
+		}
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (CounterForComma==0 && counterForEnd==1 && counterForStart==1) {
+			String strForOp = s.substring(0, s.indexOf('('));
+			this.op=Operator(strForOp);			
+			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(')')));
+			this.rightFunc=null;
+			ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
+			return cf;
+		}
+		if (counterForStart==1 && counterForEnd==1 && CounterForComma==1) {
+			String strForOp = s.substring(0, s.indexOf('('));
+			this.op=Operator(strForOp);			
+			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(',')));
+			this.rightFunc=new Polynom(s.substring(s.indexOf(',')+1,s.indexOf(')')));
+			ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
+			return cf;
+		}
+		return initFromString(s.substring(s.indexOf('(')+1, s.lastIndexOf(')')));
 	}
+	
 	@Override
 	public function copy() {
 		ComplexFunction cf= new ComplexFunction(this.leftFunc.copy(), this.rightFunc.copy(), this.op);
@@ -228,4 +260,3 @@ public class ComplexFunction implements complex_function{
 		return null;
 	}
 }
-
