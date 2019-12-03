@@ -30,6 +30,12 @@ public class ComplexFunction implements complex_function{
 		constructorHelper(left, right, Operator(new_op));
 		// TODO Auto-generated constructor stub
 	}
+	public ComplexFunction(Monom monom) {
+		// TODO Auto-generated constructor stub
+	}
+	public ComplexFunction(Polynom polynom) {
+		// TODO Auto-generated constructor stub
+	}
 	private void constructorHelper(function left, function right, Operation new_op) {
 		this.leftFunc=left.copy();
 		this.rightFunc=right.copy();
@@ -149,8 +155,30 @@ public class ComplexFunction implements complex_function{
 	}
 	@Override
 	public double f(double x) {
-		ComplexFunction cf= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-		return cf.f(x);
+		switch(this.op) {
+		case Plus:
+			return leftFunc.f(x)+rightFunc.f(x);
+		case Times:
+			return leftFunc.f(x)*rightFunc.f(x);
+		case Divid:
+			return leftFunc.f(x)/rightFunc.f(x);
+		case Min:
+			return Math.min(leftFunc.f(x), rightFunc.f(x));
+		case Max:
+			return Math.max(leftFunc.f(x), rightFunc.f(x));
+		case Comp:
+			return rightFunc.f(leftFunc.f(x));
+		case None:
+			return leftFunc.f(x);
+		default:
+			try {
+			throw new RuntimeException("ERR this operation is undefined");
+			}catch (Exception e) {
+			//	System.out.println("ERR this operation is undefined");
+				e.printStackTrace();
+				return Double.NaN;
+			}
+		}
 
 	}
 	@Override
@@ -160,8 +188,8 @@ public class ComplexFunction implements complex_function{
 	}
 	@Override
 	public function copy() {
-		ComplexFunction cf= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-		return cf.copy();
+		ComplexFunction cf= new ComplexFunction(this.leftFunc.copy(), this.rightFunc.copy(), this.op);
+		return cf;
 	}
 
 	public boolean equals(Object obj) {

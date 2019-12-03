@@ -223,6 +223,15 @@ public class Monom implements function{
 			if(objM.get_coefficient()==0&&this.get_coefficient()==0)return true;
 			return false;
 		}
+		if(obj instanceof Polynom)
+		{
+			(new Polynom(this.toString())).equals((Polynom)obj);
+		}
+		if(obj instanceof ComplexFunction) {
+			ComplexFunction cf= new ComplexFunction(this);
+			 cf.equals(obj);
+		}
+
 		return false;
 
 	}

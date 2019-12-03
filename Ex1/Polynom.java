@@ -175,6 +175,9 @@ public class Polynom implements Polynom_able{
 			}
 			return true;
 		}
+		if(obj instanceof ComplexFunction) {
+			obj.equals((Polynom)obj);
+		}
 		return false;
 	}
 
