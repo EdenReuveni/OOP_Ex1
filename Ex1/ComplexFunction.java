@@ -31,10 +31,14 @@ public class ComplexFunction implements complex_function{
 		// TODO Auto-generated constructor stub
 	}
 	public ComplexFunction(Monom monom) {
-		// TODO Auto-generated constructor stub
+		this.leftFunc=monom;
+		this.rightFunc=null;
+		this.op=Operation.None;
 	}
 	public ComplexFunction(Polynom polynom) {
-		// TODO Auto-generated constructor stub
+		this.leftFunc=polynom;
+		this.rightFunc=null;
+		this.op=Operation.None;
 	}
 	private void constructorHelper(function left, function right, Operation new_op) {
 		this.leftFunc=left.copy();
@@ -137,9 +141,14 @@ public class ComplexFunction implements complex_function{
 		try {
 			if(this.getOp().equals(Operation.None))
 			{
-				if(this.rightFunc!=null)
+				if(!this.rightFunc.equals(null))
 					throw new RuntimeException("ERR right function should be null");
 			}
+			if (!this.getOp().equals(Operation.None)) {
+				if (this.rightFunc.equals(null)) {
+					throw new RuntimeException("ERR right function should be null");
+				}
+		}
 		}
 		catch (Exception e) {
 			System.out.println("ERR right function should be null");
@@ -172,9 +181,9 @@ public class ComplexFunction implements complex_function{
 			return leftFunc.f(x);
 		default:
 			try {
-			throw new RuntimeException("ERR this operation is undefined");
+				throw new RuntimeException("ERR this operation is undefined");
 			}catch (Exception e) {
-			//	System.out.println("ERR this operation is undefined");
+				//	System.out.println("ERR this operation is undefined");
 				e.printStackTrace();
 				return Double.NaN;
 			}
@@ -193,8 +202,27 @@ public class ComplexFunction implements complex_function{
 	}
 
 	public boolean equals(Object obj) {
-		
+		if (obj instanceof ComplexFunction) {
+			ComplexFunction cf= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
+			return visualEquals(this, cf);
+		}
+		if (obj instanceof Monom) {
+			ComplexFunction cf= new ComplexFunction(new Monom(obj.toString()));
+			return visualEquals(this, cf);
+		}
+		if (obj instanceof Polynom) {
+			ComplexFunction cf= new ComplexFunction(new Polynom(obj.toString()));
+			return visualEquals(this, cf);
+		}
 		return false;
+	}
+	private  boolean visualEquals(ComplexFunction cf1, ComplexFunction cf2)
+	{
+		for (double i = -100; i < 100 ; i+=Monom.EPSILON) {
+			if (cf1.f(i)!=cf2.f(i))
+				return false;
+		}
+		return true;
 	}
 	public String toString() {
 		return null;
