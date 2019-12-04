@@ -1,4 +1,7 @@
 package Ex1;
+
+import org.omg.Messaging.SyncScopeHelper;
+
 /**
  * this class represents a complex function that have a left and right branches, with an operator in the middle.
  * each branch can be a complex function by itself.
@@ -265,6 +268,7 @@ public class ComplexFunction implements complex_function{
 	@Override
 	public function initFromString(String s) {
 		int counterForStart=0, counterForEnd=0, CounterForComma=0;
+		s.toLowerCase();
 		for (int i = 0; i < s.length(); i++) {
 			if (s.charAt(i)=='(')
 				counterForStart++;
@@ -274,30 +278,50 @@ public class ComplexFunction implements complex_function{
 				CounterForComma++;
 		}
 		try {
-			if (counterForEnd>counterForStart || counterForStart>counterForEnd) {
-				throw new RuntimeException("ERR the expretion is invalid");
+			if (counterForEnd!=counterForStart || CounterForComma!=counterForEnd) {
+				throw new RuntimeException("ERR the expresstion is invalid");
 			}
-		}catch (Exception e) {
-			e.printStackTrace();
+			/*		if (CounterForComma==0 && counterForEnd==1 && counterForStart==1) {
+				String strForOp = s.substring(0, s.indexOf('('));
+				this.op=operatorBuilder(strForOp);			
+				this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(')')));
+				this.rightFunc=null;
+				if (!this.leftFunc.equals(null) && !this.op.equals(Operation.None)){
+					//	ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
+					throw new RuntimeException("ERR both the right function and the operation shpuld be null");
+				}
+			}
+			 */	}catch (Exception e) {
+				 e.printStackTrace();
+			 }
+		/*	if (s.charAt(0)!='p'&& s.charAt(0)!='m'&& s.charAt(0)!='d'&& s.charAt(0)!='c') {
+			String strForOpNotFirst=s.substring(s.indexOf(',')+1, s.indexOf('('));
+			this.op=operatorBuilder(strForOpNotFirst);
 		}
-		if (CounterForComma==0 && counterForEnd==1 && counterForStart==1) {
-			String strForOp = s.substring(0, s.indexOf('('));
-			this.op=operatorBuilder(strForOp);			
-			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(')')));
-			this.rightFunc=null;
-			ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
-			return cf;
-		}
-		if (counterForStart==1 && counterForEnd==1 && CounterForComma==1) {
-			String strForOp = s.substring(0, s.indexOf('('));
-			this.op=operatorBuilder(strForOp);			
+		else {*/
+		String strForOpFirst = s.substring(0, s.indexOf('('));
+		this.op=operatorBuilder(strForOpFirst);	
+		this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
+		this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.indexOf(')')));
+		ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
+		return cf;
+	}
+	/*if (counterForStart==1 && counterForEnd==1 && CounterForComma==1) {
+			if (s.charAt(0)!='p'&& s.charAt(0)!='m'&& s.charAt(0)!='d'&& s.charAt(0)!='c') {
+				String strForOpNotFirst=s.substring(s.indexOf(',')+1, s.indexOf('('));
+				this.op=operatorBuilder(strForOpNotFirst);
+			}
+			else {
+				String strForOpFirst = s.substring(0, s.indexOf('('));
+				this.op=operatorBuilder(strForOpFirst);			
+			}
 			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(',')));
 			this.rightFunc=new Polynom(s.substring(s.indexOf(',')+1,s.indexOf(')')));
 			ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
 			return cf;
 		}
-		return initFromString(s.substring(s.indexOf('(')+1, s.lastIndexOf(')')));
-	}
+		return initFromString(s.substring(s.indexOf('(')+1, s.lastIndexOf(')')));*/
+
 	/**
 	 * copies a function
 	 * @return the copy of the asked function
@@ -336,7 +360,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	private  boolean visualEquals(ComplexFunction cf1, ComplexFunction cf2)
 	{
-		for (double i = -100; i < 100 ; i+=Monom.EPSILON) {
+		for (double i = -10; i < 10 ; i+=Monom.EPSILON) {
 			if (cf1.f(i)!=cf2.f(i))
 				return false;
 		}
@@ -346,6 +370,40 @@ public class ComplexFunction implements complex_function{
 	 * prints to screen a complex function
 	 */
 	public String toString() {
-		return null;
+		if (this.leftFunc instanceof Polynom) {
+			this.leftFunc=(Polynom)this.leftFunc;
+		}
+		if (this.leftFunc instanceof Monom) {
+			this.leftFunc=(Monom)this.leftFunc;
+		}
+		if (this.rightFunc instanceof Polynom) {
+			this.rightFunc=(Polynom)this.rightFunc;
+		}
+		if (this.rightFunc instanceof Monom) {
+			this.rightFunc=(Monom)this.rightFunc;
+		}
+		switch(this.op) {
+		case Plus:
+			return this.leftFunc.toString()+" + "+this.rightFunc.toString();
+		case Times:
+			return this.leftFunc.toString()+" * "+this.rightFunc.toString();
+		case Divid:
+			return this.leftFunc.toString()+" / "+this.rightFunc.toString();
+		case Min:
+			return "min( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+		case Max:
+			return "max( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+		case Comp:
+			return this.rightFunc.toString().replace("x", "( "+this.leftFunc.toString()+" )"); 
+		case None:
+			return this.leftFunc.toString();
+		default:
+			try {
+				throw new RuntimeException("ERR this operation is undefined");
+			}catch (Exception e) {
+				//	System.out.println("ERR this operation is undefined");
+				return "ERR this operation is undefined";
+			}
+		}
 	}
 }
