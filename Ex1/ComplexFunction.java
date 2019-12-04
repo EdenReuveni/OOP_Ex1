@@ -1,6 +1,5 @@
 package Ex1;
 
-import org.omg.Messaging.SyncScopeHelper;
 
 /**
  * this class represents a complex function that have a left and right branches, with an operator in the middle.
@@ -202,7 +201,7 @@ public class ComplexFunction implements complex_function{
 		catch (Exception e) {
 			System.out.println("ERR left function should not be null");
 		}
-		return this.leftFunc.copy();
+		return this.leftFunc;
 	}
 	/** returns the right side of the complex function - this side might not exists (aka equals null).
 	 * @return a function representing the left side of this complex funcation
@@ -223,7 +222,7 @@ public class ComplexFunction implements complex_function{
 		catch (Exception e) {
 			System.out.println("ERR right function should be null");
 		}
-		return this.rightFunc.copy();
+		return this.rightFunc;
 	}
 	/**
 	 * The complex_function oparation: plus, mul, div, max, min, comp
@@ -277,6 +276,10 @@ public class ComplexFunction implements complex_function{
 			if (s.charAt(i)==',')
 				CounterForComma++;
 		}
+		if (counterForEnd==0 && counterForStart==0 && CounterForComma==0) {
+			Polynom p=new Polynom (s.toString());
+			return p;
+		}
 		try {
 			if (counterForEnd!=counterForStart || CounterForComma!=counterForEnd) {
 				throw new RuntimeException("ERR the expresstion is invalid");
@@ -299,8 +302,8 @@ public class ComplexFunction implements complex_function{
 			this.op=operatorBuilder(strForOpNotFirst);
 		}
 		else {*/
-		String strForOpFirst = s.substring(0, s.indexOf('('));
-		this.op=operatorBuilder(strForOpFirst);	
+		String strForOp = s.substring(0, s.indexOf('('));
+		this.op=operatorBuilder(strForOp);	
 		this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
 		this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.indexOf(')')));
 		ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
@@ -370,38 +373,34 @@ public class ComplexFunction implements complex_function{
 	 * prints to screen a complex function
 	 */
 	public String toString() {
-		if (this.leftFunc instanceof Polynom) {
-			this.leftFunc=(Polynom)this.leftFunc;
+		
+		if (!this.leftFunc.toString().contains(",")) {
+			Polynom p=(Polynom)this.leftFunc;
+			return p.toString();
 		}
-		if (this.leftFunc instanceof Monom) {
-			this.leftFunc=(Monom)this.leftFunc;
-		}
-		if (this.rightFunc instanceof Polynom) {
-			this.rightFunc=(Polynom)this.rightFunc;
-		}
-		if (this.rightFunc instanceof Monom) {
-			this.rightFunc=(Monom)this.rightFunc;
+		if (!this.rightFunc.toString().contains(",")) {
+			Polynom p=(Polynom)this.rightFunc;
+			return p.toString();
 		}
 		switch(this.op) {
 		case Plus:
-			return this.leftFunc.toString()+" + "+this.rightFunc.toString();
+			return "plus( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
 		case Times:
-			return this.leftFunc.toString()+" * "+this.rightFunc.toString();
+			return "mul( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
 		case Divid:
-			return this.leftFunc.toString()+" / "+this.rightFunc.toString();
+			return "div( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
 		case Min:
 			return "min( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
 		case Max:
 			return "max( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
 		case Comp:
-			return this.rightFunc.toString().replace("x", "( "+this.leftFunc.toString()+" )"); 
+			return "comp( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
 		case None:
 			return this.leftFunc.toString();
 		default:
 			try {
 				throw new RuntimeException("ERR this operation is undefined");
 			}catch (Exception e) {
-				//	System.out.println("ERR this operation is undefined");
 				return "ERR this operation is undefined";
 			}
 		}
