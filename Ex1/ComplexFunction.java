@@ -266,6 +266,32 @@ public class ComplexFunction implements complex_function{
 	 */
 	@Override
 	public function initFromString(String s) {
+		int counterForStart=0, counterForEnd=0,indexcomma=-1;
+		s.toLowerCase();
+		s=s.replace(" ", "");
+		if (s.contains("(")) {
+			String[] strStart=s.split("\\(",2);//split the string into 2 parts op and the rest;
+			for (int i = 0; i < strStart[1].length(); i++) {// find the comma between the 2 functions
+				if (strStart[1].charAt(i)=='(')
+					counterForStart++;
+				if (strStart[1].charAt(i)==')')
+					counterForEnd++;
+				if ((counterForEnd-counterForStart)==0&& strStart[1].charAt(i)==',') {//found the middle comma
+					indexcomma=i;
+					break;
+				}
+			}
+			Operation op=operatorBuilder(strStart[0]);
+			String leftFunc=strStart[1].substring(0,indexcomma);
+			String rightFunc=strStart[1].substring(indexcomma+1,strStart[1].length()-1);
+			return new ComplexFunction(this.initFromString(leftFunc), this.initFromString(rightFunc),op);
+		}
+		else {
+			Polynom pol=new Polynom();
+			return pol.initFromString(s);
+		}
+	}
+	/*public function initFromString(String s) {
 		int counterForStart=0, counterForEnd=0, CounterForComma=0;
 		s.toLowerCase();
 		for (int i = 0; i < s.length(); i++) {
@@ -284,47 +310,22 @@ public class ComplexFunction implements complex_function{
 			if (counterForEnd!=counterForStart || CounterForComma!=counterForEnd) {
 				throw new RuntimeException("ERR the expresstion is invalid");
 			}
-			/*		if (CounterForComma==0 && counterForEnd==1 && counterForStart==1) {
-				String strForOp = s.substring(0, s.indexOf('('));
-				this.op=operatorBuilder(strForOp);			
-				this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(')')));
-				this.rightFunc=null;
-				if (!this.leftFunc.equals(null) && !this.op.equals(Operation.None)){
-					//	ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
-					throw new RuntimeException("ERR both the right function and the operation shpuld be null");
-				}
-			}
-			 */	}catch (Exception e) {
-				 e.printStackTrace();
+			}catch (Exception e) {
+				 System.out.println("ERR the expresstion is invalid");
 			 }
-		/*	if (s.charAt(0)!='p'&& s.charAt(0)!='m'&& s.charAt(0)!='d'&& s.charAt(0)!='c') {
-			String strForOpNotFirst=s.substring(s.indexOf(',')+1, s.indexOf('('));
-			this.op=operatorBuilder(strForOpNotFirst);
-		}
-		else {*/
+		//the function gets only strings with no spaces between!
 		String strForOp = s.substring(0, s.indexOf('('));
 		this.op=operatorBuilder(strForOp);	
-		this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
-		this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.indexOf(')')));
-		ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
-		return cf;
-	}
-	/*if (counterForStart==1 && counterForEnd==1 && CounterForComma==1) {
-			if (s.charAt(0)!='p'&& s.charAt(0)!='m'&& s.charAt(0)!='d'&& s.charAt(0)!='c') {
-				String strForOpNotFirst=s.substring(s.indexOf(',')+1, s.indexOf('('));
-				this.op=operatorBuilder(strForOpNotFirst);
-			}
-			else {
-				String strForOpFirst = s.substring(0, s.indexOf('('));
-				this.op=operatorBuilder(strForOpFirst);			
-			}
-			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(',')));
-			this.rightFunc=new Polynom(s.substring(s.indexOf(',')+1,s.indexOf(')')));
-			ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
-			return cf;
-		}
-		return initFromString(s.substring(s.indexOf('(')+1, s.lastIndexOf(')')));*/
+		if (counterForEnd>1) {
+				this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(')')+1));
 
+		}
+		this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
+		this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.lastIndexOf(')')));
+		ComplexFunction cf=new ComplexFunction(this.leftFunc.copy(),this.rightFunc.copy(),this.op);
+		return cf;
+	}*/
+	
 	/**
 	 * copies a function
 	 * @return the copy of the asked function
@@ -363,7 +364,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	private  boolean visualEquals(ComplexFunction cf1, ComplexFunction cf2)
 	{
-		for (double i = -10; i < 10 ; i+=Monom.EPSILON) {
+		for (double i = -1; i < 1 ; i+=Monom.EPSILON) {
 			if (cf1.f(i)!=cf2.f(i))
 				return false;
 		}
@@ -373,28 +374,28 @@ public class ComplexFunction implements complex_function{
 	 * prints to screen a complex function
 	 */
 	public String toString() {
-		
-		if (!this.leftFunc.toString().contains(",")) {
+
+		/*if (!this.leftFunc.toString().contains(",")) {
 			Polynom p=(Polynom)this.leftFunc;
 			return p.toString();
 		}
 		if (!this.rightFunc.toString().contains(",")) {
 			Polynom p=(Polynom)this.rightFunc;
 			return p.toString();
-		}
+		}*/
 		switch(this.op) {
 		case Plus:
-			return "plus( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+			return "plus("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
 		case Times:
-			return "mul( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+			return "mul("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
 		case Divid:
-			return "div( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+			return "div("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
 		case Min:
-			return "min( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+			return "min("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
 		case Max:
-			return "max( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+			return "max("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
 		case Comp:
-			return "comp( "+this.leftFunc.toString()+" , "+this.rightFunc.toString()+" )";
+			return "comp("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
 		case None:
 			return this.leftFunc.toString();
 		default:
