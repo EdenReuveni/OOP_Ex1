@@ -2,6 +2,8 @@ package Ex1;
 
 import com.sun.source.tree.BinaryTree;
 
+import Ex1.complex_function;
+
 
 /**
  * this class represents a complex function that have a left and right branches, with an operator in the middle.

@@ -43,7 +43,7 @@ public class PolynomTest {
 			p3.add(m);
 		}
 		System.out.println("********Test 2:********");
-		Polynom_able p4=p1.copy();
+		Polynom_able p4=(Polynom_able) p1.copy();
 		p4.multiply(Monom.MINUS1);
 		System.out.println("p1: "+p1);
 		System.out.println("p2: "+p2);
@@ -55,7 +55,7 @@ public class PolynomTest {
 		System.out.println("p1+p2: "+p1);
 		p1.multiply(p2);
 		System.out.println("(p1+p2)*p2: "+p1);
-		Polynom_able pp=p1.copy();
+		Polynom_able pp=(Polynom_able) p1.copy();
 		System.out.println("pp: "+pp);
 		System.out.println("Are pp and p1 equals? "+pp.equals(p1));
 		System.out.println("Are pp and p3 equals? "+pp.equals(p3));
