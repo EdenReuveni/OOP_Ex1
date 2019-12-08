@@ -143,7 +143,7 @@ public class Monom implements function{
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException("ERROR: The string is illegal");
+			throw new RuntimeException("ERROR: The string is invalid");
 		}
 
 	}

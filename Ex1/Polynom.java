@@ -3,6 +3,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import javax.management.RuntimeErrorException;
+
+
+
 
 /**
  * This class represents a Polynom with add, multiply functionality, it also should support the following:
@@ -51,18 +55,18 @@ public class Polynom implements Polynom_able{
 					}
 					add(new Monom(temp));
 					temp="";// clear the temporary string
-				}	
-				else // if there is only one Monom in the string/ is the last one.
+				}
+				else// if there is only one Monom in the string/ is the last one.
 				{
 					Pol.add(new Monom(s));
 					s=s.substring(1);
+					break;
 				}
 			}
 		}
 		catch(Exception e)
 		{
-			throw new RuntimeException("ERROR: The string is illegal");
-
+			throw new RuntimeException("ERROR: The string is invalid");
 		}
 	}
 	/**This function calculates a simple function of type y=f(x)
@@ -176,7 +180,8 @@ public class Polynom implements Polynom_able{
 			return true;
 		}
 		if(obj instanceof ComplexFunction) {
-			obj.equals((Polynom)obj);
+//			ComplexFunction cf=new ComplexFunction(this);
+			return obj.equals(this);
 		}
 		return false;
 	}
@@ -301,9 +306,11 @@ public class Polynom implements Polynom_able{
 	@Override
 	public void multiply(Monom m1) {
 		// TODO Auto-generated method stub
+		Monom m=(Monom)m1.copy();
 		Iterator <Monom> it= this.iteretor();
-		while(it.hasNext()) 
-			it.next().multipy(m1);
+		while(it.hasNext()) {
+			it.next().multipy(m);
+		}
 	}
 	/**
 	 * write the Polynom as a string.
@@ -328,8 +335,7 @@ public class Polynom implements Polynom_able{
 	}
 	@Override
 	public function initFromString(String s) {
-		Polynom pol= new Polynom(s);
-		return pol;
+		return new Polynom(s);
 	}
 
 }

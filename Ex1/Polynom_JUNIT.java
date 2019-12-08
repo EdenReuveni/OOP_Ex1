@@ -47,18 +47,20 @@ class Polynom_JUNIT {
 				fail("Didn't build a polynom from a valid string with constructor (String)");
 			}
 		}
-		String[] inValidInput = {"5*x^-2 "," 9*x^1.5","1*Xx","8*X^0", "p","-3*x^i"}; // invalid input
+		String[] inValidInput = {"5x^(-2) "," 9*x^1.5","1*Xx","8*X^0", "p","-3*x^i"}; // invalid input
 		for (int i = 0; i < inValidInput.length; i++) {
 			try 
 			{
 				polynomAc = new Polynom(inValidInput[i]);
-				fail("String Constructor did not throw exception when got invalid input");
+				fail("Didn't throw error when got invalid string");
 			}
 			catch (Exception e) 
 			{
 
 			}
 		}
+
+
 	}
 	/**
 	 * testing F function.
@@ -235,7 +237,7 @@ class Polynom_JUNIT {
 		polynomEx=new Polynom("-18x^7+18x^3+12x^2");	
 		polynomAc.multiply(mul);
 		if(!polynomAc.equals(polynomEx))
-			fail(" Multiply(Polynom) is not working well");
+			fail(" Multiply(Monom) is not working well");
 	}
 	/**
 	 * testing toString 

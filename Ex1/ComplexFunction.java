@@ -1,5 +1,7 @@
 package Ex1;
 
+import com.sun.source.tree.BinaryTree;
+
 
 /**
  * this class represents a complex function that have a left and right branches, with an operator in the middle.
@@ -21,7 +23,7 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(Operation op,function left, function right) {
-		constructorHelper(left, right, op);
+		constructorHelper(left.copy(), right.copy(), op);
 	}
 	/**
 	 * constructor for building a new complex function
@@ -32,7 +34,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(function left,Operation op, function right) {
 		// TODO Auto-generated constructor stub
-		constructorHelper(left, right, op);
+		constructorHelper(left.copy(), right.copy(), op);
 	}
 	/**
 	 * constructor for building a new complex function
@@ -43,7 +45,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(function left, function right, Operation op) {
 		// TODO Auto-generated constructor stub
-		constructorHelper(left, right, op);
+		constructorHelper(left.copy(), right.copy(), op);
 	}
 	/**
 	 * constructor for building a new complex function
@@ -54,7 +56,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(String new_op, function left, function right) {
 		// TODO Auto-generated constructor stub
-		constructorHelper(left, right, operatorBuilder(new_op));
+		constructorHelper(left.copy(), right.copy(), operatorBuilder(new_op));
 	}
 	/**
 	 * constructor for building a new complex function
@@ -64,7 +66,7 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(function left, String new_op, function right) {
-		constructorHelper(left, right, operatorBuilder(new_op));
+		constructorHelper(left.copy(), right.copy(), operatorBuilder(new_op));
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -75,7 +77,7 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(function left, function right, String new_op) {
-		constructorHelper(left, right, operatorBuilder(new_op));
+		constructorHelper(left.copy(), right.copy(), operatorBuilder(new_op));
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -83,7 +85,7 @@ public class ComplexFunction implements complex_function{
 	 * @param monom is the given monom
 	 */
 	public ComplexFunction(Monom monom) {
-		this.leftFunc=monom;
+		this.leftFunc=monom.copy();
 		this.rightFunc=null;
 		this.op=Operation.None;
 	}
@@ -92,7 +94,7 @@ public class ComplexFunction implements complex_function{
 	 * @param polynom is the given polynom
 	 */
 	public ComplexFunction(Polynom polynom) {
-		this.leftFunc=polynom;
+		this.leftFunc=polynom.copy();
 		this.rightFunc=null;
 		this.op=Operation.None;
 	}
@@ -105,8 +107,14 @@ public class ComplexFunction implements complex_function{
 	 * @param new_op is the given operator
 	 */
 	private void constructorHelper(function left, function right, Operation new_op) {
-		this.leftFunc=left.copy();
-		this.rightFunc=right.copy();
+		if(left!=null)
+			this.leftFunc=left.copy();
+		else
+			this.leftFunc=null;
+		if(right!=null)
+			this.rightFunc=right.copy();
+		else
+			this.rightFunc=null;
 		this.op=new_op;	
 	}
 	/**
@@ -237,7 +245,7 @@ public class ComplexFunction implements complex_function{
 		case Plus:
 			return leftFunc.f(x)+rightFunc.f(x);
 		case Times:
-			return leftFunc.f(x)*rightFunc.f(x);
+			return leftFunc.copy().f(x)*rightFunc.copy().f(x);
 		case Divid:
 			return leftFunc.f(x)/rightFunc.f(x);
 		case Min:
@@ -284,48 +292,57 @@ public class ComplexFunction implements complex_function{
 			Operation op=operatorBuilder(strStart[0]);
 			String leftFunc=strStart[1].substring(0,indexcomma);
 			String rightFunc=strStart[1].substring(indexcomma+1,strStart[1].length()-1);
-			return new ComplexFunction(this.initFromString(leftFunc), this.initFromString(rightFunc),op);
+			return new ComplexFunction(initFromString(leftFunc), initFromString(rightFunc),op);
 		}
 		else {
-			Polynom pol=new Polynom();
-			return pol.initFromString(s);
+			Polynom pol=new Polynom(s);
+			return pol;
 		}
 	}
-	/*public function initFromString(String s) {
-		int counterForStart=0, counterForEnd=0, CounterForComma=0;
-		s.toLowerCase();
-		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i)=='(')
-				counterForStart++;
-			if (s.charAt(i)==')')
-				counterForEnd++;
-			if (s.charAt(i)==',')
-				CounterForComma++;
-		}
-		if (counterForEnd==0 && counterForStart==0 && CounterForComma==0) {
-			Polynom p=new Polynom (s.toString());
-			return p;
-		}
-		try {
-			if (counterForEnd!=counterForStart || CounterForComma!=counterForEnd) {
-				throw new RuntimeException("ERR the expresstion is invalid");
-			}
-			}catch (Exception e) {
-				 System.out.println("ERR the expresstion is invalid");
-			 }
-		//the function gets only strings with no spaces between!
-		String strForOp = s.substring(0, s.indexOf('('));
-		this.op=operatorBuilder(strForOp);	
-		if (counterForEnd>1) {
-				this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(')')+1));
 
-		}
-		this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
-		this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.lastIndexOf(')')));
-		ComplexFunction cf=new ComplexFunction(this.leftFunc.copy(),this.rightFunc.copy(),this.op);
-		return cf;
-	}*/
-	
+	//	int counterForStart=0, counterForEnd=0, CounterForComma=0;
+	//	s.toLowerCase();
+	//	for (int i = 0; i < s.length(); i++) {
+	//		if (s.charAt(i)=='(')
+	//			counterForStart++;
+	//		if (s.charAt(i)==')')
+	//			counterForEnd++;
+	//		if (s.charAt(i)==',')
+	//			CounterForComma++;
+	//	}
+	//	if (counterForEnd==0 && counterForStart==0 && CounterForComma==0) {
+	//		Polynom p=new Polynom (s.toString());
+	//		return p;
+	//	}
+	//	try {
+	//		if (counterForEnd!=counterForStart || CounterForComma!=counterForEnd) {
+	//			throw new RuntimeException("ERR the expresstion is invalid");
+	//		}
+	//		/*		if (CounterForComma==0 && counterForEnd==1 && counterForStart==1) {
+	//			String strForOp = s.substring(0, s.indexOf('('));
+	//			this.op=operatorBuilder(strForOp);			
+	//			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(')')));
+	//			this.rightFunc=null;
+	//			if (!this.leftFunc.equals(null) && !this.op.equals(Operation.None)){
+	//				//	ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
+	//				throw new RuntimeException("ERR both the right function and the operation shpuld be null");
+	//			}
+	//		}
+	//		 */	}catch (Exception e) {
+	//			 e.printStackTrace();
+	//		 }
+	//	/*	if (s.charAt(0)!='p'&& s.charAt(0)!='m'&& s.charAt(0)!='d'&& s.charAt(0)!='c') {
+	//		String strForOpNotFirst=s.substring(s.indexOf(',')+1, s.indexOf('('));
+	//		this.op=operatorBuilder(strForOpNotFirst);
+	//	}
+	//	else {*/
+	//	String strForOp = s.substring(0, s.indexOf('('));
+	//	this.op=operatorBuilder(strForOp);	
+	//	this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
+	//	this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.indexOf(')')));
+	//	ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
+	//	return cf;
+	//}
 	/**
 	 * copies a function
 	 * @return the copy of the asked function
@@ -341,8 +358,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof ComplexFunction) {
-			ComplexFunction cf= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-			return visualEquals(this, cf);
+			return visualEquals(this,(ComplexFunction)obj);
 		}
 		if (obj instanceof Monom) {
 			ComplexFunction cf= new ComplexFunction(new Monom(obj.toString()));
@@ -365,7 +381,7 @@ public class ComplexFunction implements complex_function{
 	private  boolean visualEquals(ComplexFunction cf1, ComplexFunction cf2)
 	{
 		for (double i = -1; i < 1 ; i+=Monom.EPSILON) {
-			if (cf1.f(i)!=cf2.f(i))
+			if(Math.abs(cf1.f(i)-cf2.f(i))>Monom.EPSILON)
 				return false;
 		}
 		return true;
@@ -374,15 +390,6 @@ public class ComplexFunction implements complex_function{
 	 * prints to screen a complex function
 	 */
 	public String toString() {
-
-		/*if (!this.leftFunc.toString().contains(",")) {
-			Polynom p=(Polynom)this.leftFunc;
-			return p.toString();
-		}
-		if (!this.rightFunc.toString().contains(",")) {
-			Polynom p=(Polynom)this.rightFunc;
-			return p.toString();
-		}*/
 		switch(this.op) {
 		case Plus:
 			return "plus("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
