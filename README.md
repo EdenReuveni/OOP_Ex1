@@ -5,7 +5,7 @@ This project represents a general Polynom: f(x) = a_1X^b_1 + a_2x^b_2 ... a_nX^b
 Each Polynom consists of a collection (Array List in our project) of monoms.
 (In our project the Polynom does not consist the chars _ , (), /  and *. )
 
-*In this project we have 4 JUNIT tests for: Polynom, Monom, ComplexFunction, Functions_GUI and also, we have 7 classes:*
+*In this project we have 4 JUNIT tests for: Polynom, Monom, ComplexFunction, Functions_GUI. We also have 7 classes:*
 
 # Monon:
  This class represents a simple "Monom" of shape ax^b, where a is a real number (the coefficient) and b (the power) is an integer (summed a nonnegative). <br />
@@ -84,8 +84,16 @@ toString- prints to user this complex function.
 
   # Functions_GUI:
   This class is an implemention of functions interface.<br />
-  
-  
+  It's consistong of a collection (Array List in our project) of functions.<br />
+  The class have an array of colors, in which it will draw the functions.<br />
+  It implements all the functions of a collection (size, isEmpty, contains, Iterator, both toArray functions, add, remove, contiansAll,addAll,removeAll,retainAll,clear)<br />
+   The functions-<br />
+   Constructors:<br />
+A default constructor that creates an empty new collection<br />
+initFromFile- <br />
+saveToFile- <br />
+drawFunctions- gets all the parameters <br />
+drawFunctions- reads from a Json file, using Gson <br />
   
   
   # Parameters:
