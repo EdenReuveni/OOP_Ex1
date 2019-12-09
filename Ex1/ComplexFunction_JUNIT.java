@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 class ComplexFunction_JUNIT {
 	public static final double EPS = 0.00001;
 
-/*	@Test
+	@Test
 	void testLeft() {
 		Monom m1 = new Monom(2,3);
 		Monom m2 = new Monom(3,2);
@@ -144,40 +144,37 @@ class ComplexFunction_JUNIT {
 	void testGetOP() {
 		Polynom p1=new Polynom("3x^5+2x-1");
 		Polynom p2=new Polynom("x^2-3x+11");
-		ComplexFunction cf=new ComplexFunction(p1, p2, "");
-		assertTrue("check getOP function: ",cf.getOp().equals(Operation.None));
 		ComplexFunction cf1=new ComplexFunction(p1, p2, "skdj");
 		assertTrue("check getOP function: ",cf1.getOp().equals(Operation.Error));
 		ComplexFunction cf2=new ComplexFunction(p1, p2, "mul");
 		assertTrue("check getOP function: ",cf2.getOp().equals(Operation.Times));
-
-	}*/
-	@Test
-	void testRightFunctionNull() {
-		Polynom p1=new Polynom("3x^5+2x-1");
-		Polynom p2=new Polynom("");
-		Polynom p3=null;
-		ComplexFunction cf=new ComplexFunction(p1, p2, "");
-		try {
-		ComplexFunction cf1=new ComplexFunction(p1, p2, "plus");
-		}catch (Exception e) {
-			fail("complex function did not need to throw an exeption");
-
-		}
-		try {
-		ComplexFunction cf2=new ComplexFunction(p1, p3, "");
-		fail("complex function was not created");
-
-		}catch (Exception e) {
-			
-		}
-		try {
-		ComplexFunction cf3=new ComplexFunction(p1, p3, "mul");
-		fail("complex function was not created");
-		}
-		catch (Exception e) {
-		}
-		
 	}
+//	@Test
+//	void testRightFunctionNull() {
+//		Polynom p1=new Polynom("3x^5+2x-1");
+//		Polynom p2=new Polynom("");
+//		Polynom p3=null;
+//		ComplexFunction cf=new ComplexFunction(p1, p2, "");
+//		try {
+//		ComplexFunction cf1=new ComplexFunction(p1, p2, "plus");
+//		}catch (Exception e) {
+//			fail("complex function did not need to throw an exeption");
+//
+//		}
+//		try {
+//		ComplexFunction cf2=new ComplexFunction(p1, p3, "");
+//		fail("complex function was not created");
+//
+//		}catch (Exception e) {
+//			
+//		}
+//		try {
+//		ComplexFunction cf3=new ComplexFunction(p1, p3, "mul");
+//		fail("complex function was not created");
+//		}
+//		catch (Exception e) {
+//		}
+//		
+//	}
 
 }

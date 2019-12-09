@@ -1,16 +1,16 @@
 package Ex1;
 
 public class Parameters {
-	private int width;
-	private int height; 
-	public double[] rx;
-	public double[] ry;
-	private int resolution;
+	private int Width;
+	private int Height; 
+	public double[] Range_X;
+	public double[] Range_Y;
+	private int Resolution;
 
 	public Parameters() {
 
-		this.rx = new double[2];
-		this.ry = new double[2];
+		this.Range_X = new double[2];
+		this.Range_Y = new double[2];
 	}
 	/**
 	 * constructor
@@ -22,20 +22,20 @@ public class Parameters {
 	 */
 	public Parameters(int width, int height, double[] rx, double[] ry, int resolution) {
 		super();
-		this.width = width;
-		this.height = height;
-		this.rx = rx;
-		this.ry = ry;
-		this.resolution = resolution;
+		this.Width = width;
+		this.Height = height;
+		this.Range_X = rx;
+		this.Range_Y = ry;
+		this.Resolution = resolution;
 	}
 	public int getWidth() {
-		return width;
+		return Width;
 	}
 	public int getHeight() {
-		return height;
+		return Height;
 	}
 	public int getResolution() {
-		return resolution;
+		return Resolution;
 	}
 
 }

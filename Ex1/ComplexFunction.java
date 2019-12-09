@@ -25,7 +25,7 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(Operation op,function left, function right) {
-		constructorHelper(left.copy(), right.copy(), op);
+		constructorHelper(left, right, op);
 	}
 	/**
 	 * constructor for building a new complex function
@@ -36,7 +36,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(function left,Operation op, function right) {
 		// TODO Auto-generated constructor stub
-		constructorHelper(left.copy(), right.copy(), op);
+		constructorHelper(left, right, op);
 	}
 	/**
 	 * constructor for building a new complex function
@@ -47,7 +47,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(function left, function right, Operation op) {
 		// TODO Auto-generated constructor stub
-		constructorHelper(left.copy(), right.copy(), op);
+		constructorHelper(left, right, op);
 	}
 	/**
 	 * constructor for building a new complex function
@@ -58,7 +58,7 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(String new_op, function left, function right) {
 		// TODO Auto-generated constructor stub
-		constructorHelper(left.copy(), right.copy(), operatorBuilder(new_op));
+		constructorHelper(left, right, operatorBuilder(new_op));
 	}
 	/**
 	 * constructor for building a new complex function
@@ -68,7 +68,7 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(function left, String new_op, function right) {
-		constructorHelper(left.copy(), right.copy(), operatorBuilder(new_op));
+		constructorHelper(left, right, operatorBuilder(new_op));
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -79,7 +79,7 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(function left, function right, String new_op) {
-		constructorHelper(left.copy(), right.copy(), operatorBuilder(new_op));
+		constructorHelper(left, right, operatorBuilder(new_op));
 		// TODO Auto-generated constructor stub
 	}
 	/**
@@ -87,7 +87,7 @@ public class ComplexFunction implements complex_function{
 	 * @param monom is the given monom
 	 */
 	public ComplexFunction(Monom monom) {
-		this.leftFunc=monom.copy();
+		this.leftFunc=monom;
 		this.rightFunc=null;
 		this.op=Operation.None;
 	}
@@ -96,9 +96,27 @@ public class ComplexFunction implements complex_function{
 	 * @param polynom is the given polynom
 	 */
 	public ComplexFunction(Polynom polynom) {
-		this.leftFunc=polynom.copy();
+		this.leftFunc=polynom;
 		this.rightFunc=null;
 		this.op=Operation.None;
+	}
+	public ComplexFunction(ComplexFunction cf) {
+		this.leftFunc=cf.leftFunc.copy();
+		this.rightFunc=cf.rightFunc.copy();
+		this.op=cf.getOp();
+	}
+	public ComplexFunction(function f) {
+		if(f instanceof Monom)
+			new ComplexFunction((Monom)f);
+		else if(f instanceof Polynom)
+			new ComplexFunction((Polynom)f);
+		else if(f instanceof ComplexFunction) {
+			ComplexFunction cf= (ComplexFunction)f.copy();
+			this.leftFunc=cf.leftFunc;
+			this.rightFunc=cf.rightFunc;
+			this.op=cf.getOp();
+		}
+		else throw new RuntimeException("ERROR: The object type is invalid");
 	}
 	/**
 	 * constructor to build a new complax function
@@ -109,15 +127,28 @@ public class ComplexFunction implements complex_function{
 	 * @param new_op is the given operator
 	 */
 	private void constructorHelper(function left, function right, Operation new_op) {
-		if(left!=null)
+		if (right==null && new_op.equals(Operation.None)) {
+			this.leftFunc=left;
+			this.rightFunc=right;
+			this.op=new_op;
+		}
+		else if (right!=null && new_op.equals(Operation.None)) 
+			throw new RuntimeException("ERROR: Right function should be null");
+		else {	
+			this.leftFunc=left;
+			this.rightFunc=right;
+			this.op=new_op;
+		}
+
+		/*	if(this.left()!=null)
 			this.leftFunc=left.copy();
 		else
 			this.leftFunc=null;
-		if(right!=null)
+		if(this.right()!=null)
 			this.rightFunc=right.copy();
 		else
 			this.rightFunc=null;
-		this.op=new_op;	
+		this.op=new_op;	*/
 	}
 	/**
 	 * function to convert a string representing an operation to its enum value
@@ -160,7 +191,8 @@ public class ComplexFunction implements complex_function{
 	 * @param f1 the complex_function which will be multiply be this complex_function.
 	 */
 	public void mul(function f1) {
-		this.leftFunc= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
+		ComplexFunction cf= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
+		this.leftFunc= cf.copy();
 		this.rightFunc=f1.copy();
 		this.op=Operation.Times;
 	}
@@ -247,7 +279,7 @@ public class ComplexFunction implements complex_function{
 		case Plus:
 			return leftFunc.f(x)+rightFunc.f(x);
 		case Times:
-			return leftFunc.copy().f(x)*rightFunc.copy().f(x);
+			return leftFunc.f(x)*rightFunc.f(x);
 		case Divid:
 			return leftFunc.f(x)/rightFunc.f(x);
 		case Min:
@@ -351,7 +383,11 @@ public class ComplexFunction implements complex_function{
 	 */
 	@Override
 	public function copy() {
-		ComplexFunction cf= new ComplexFunction(this.leftFunc.copy(), this.rightFunc.copy(), this.op);
+		ComplexFunction cf;
+		if(this.rightFunc==null)
+			cf= new ComplexFunction(this.leftFunc.copy(),null, this.getOp());
+		else
+			cf= new ComplexFunction(this.leftFunc.copy(), this.rightFunc.copy(), this.getOp());
 		return cf;
 	}
 	/**

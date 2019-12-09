@@ -1,6 +1,7 @@
 package Ex1;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
@@ -8,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -144,11 +144,9 @@ public class Functions_GUI implements functions{
 		}
 	}
 
-
-
 	@Override
 	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
-		// TODO Auto-generated method stub
+
 		int n = resolution;
 		StdDraw.setCanvasSize(width, height);
 		int size = colFunc.size();
@@ -161,17 +159,42 @@ public class Functions_GUI implements functions{
 			for(int a=0;a<size;a++) {
 				yy[a][i] = colFunc.get(a).f(x[i]);
 			}
-			x0+=x_step;
+			x0+=x_step;	
+
 		}
 		StdDraw.setXscale(rx.get_min(), rx.get_max());
 		StdDraw.setYscale(ry.get_min(), ry.get_max());
+
+		for(double xl=rx.get_min();xl<=rx.get_max();xl++) {
+			StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+			StdDraw.setPenRadius(0.002);
+			StdDraw.line(xl,ry.get_max(), xl,ry.get_min());
+			StdDraw.setPenColor(StdDraw.BLACK);
+			String s=""+(int)xl;
+			StdDraw.text(xl,-0.5 ,s);
+		}
+
+		for(double yl=ry.get_min();yl<=ry.get_max();yl++) {
+			StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
+			StdDraw.setPenRadius(0.002);
+			StdDraw.line(rx.get_min(),yl,rx.get_max(),yl);
+			StdDraw.setPenColor(StdDraw.BLACK);
+			String s=""+(int)yl;
+			StdDraw.text(-0.5,yl ,s);
+
+		}
+		//draw x axis and y axis
+		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.setPenRadius(0.005);
+		StdDraw.line(rx.get_min(),0, rx.get_max(),0);
+		StdDraw.line(0,ry.get_min(), 0,ry.get_max());
 
 
 		// plot the approximation to the function
 		for(int a=0;a<size;a++) {
 			int c = a%Colors.length;
+			StdDraw.setPenRadius(0.003);
 			StdDraw.setPenColor(Colors[c]);
-
 			System.out.println(a+") "+Colors[a]+"  f(x)= "+colFunc.get(a));
 			for (int i = 0; i < n; i++) {
 				StdDraw.line(x[i], yy[a][i], x[i+1], yy[a][i+1]);
@@ -179,29 +202,19 @@ public class Functions_GUI implements functions{
 		}	
 	}
 
-
-
-
-
 	@Override
 	public void drawFunctions(String json_file) {
-		// TODO Auto-generated method stub		
-			Gson gson = new Gson();			
-			try 
-			{
-				//Option 2: from JSON file to Object
-				FileReader reader = new FileReader(json_file);
-				Parameters par = gson.fromJson(reader,Parameters.class);
-				this.drawFunctions(par.getWidth(),par.getHeight(),new Range(par.rx[0],par.rx[1]),new Range(par.ry[0],par.ry[1]),par.getResolution());
-					} 
-			catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-	}
-
-	public Polynom get(int i) {
-		// TODO Auto-generated method stub
-		return  (Polynom) this.colFunc.get(i);
+		Gson gson = new Gson();			
+		try 
+		{
+			//Option 2: from JSON file to Object
+			FileReader reader = new FileReader(json_file);
+			Parameters par = gson.fromJson(reader,Parameters.class);
+			this.drawFunctions(par.getWidth(),par.getHeight(),new Range(par.Range_X[0],par.Range_X[1]),new Range(par.Range_Y[0],par.Range_Y[1]),par.getResolution());
+		} 
+		catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
