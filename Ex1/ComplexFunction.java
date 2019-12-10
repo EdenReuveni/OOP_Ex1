@@ -1,6 +1,5 @@
+  
 package Ex1;
-
-import com.sun.source.tree.BinaryTree;
 
 import Ex1.complex_function;
 
@@ -100,11 +99,19 @@ public class ComplexFunction implements complex_function{
 		this.rightFunc=null;
 		this.op=Operation.None;
 	}
+	/**
+	 * constructor for building a new complex function from another complex function
+	 * @param cf is the given complex function
+	 */
 	public ComplexFunction(ComplexFunction cf) {
 		this.leftFunc=cf.leftFunc.copy();
 		this.rightFunc=cf.rightFunc.copy();
 		this.op=cf.getOp();
 	}
+	/**
+	 * constructor for building a new complex function from a function
+	 * @param f is the given function
+	 */
 	public ComplexFunction(function f) {
 		if(f instanceof Monom)
 			new ComplexFunction((Monom)f);
@@ -139,16 +146,6 @@ public class ComplexFunction implements complex_function{
 			this.rightFunc=right;
 			this.op=new_op;
 		}
-
-		/*	if(this.left()!=null)
-			this.leftFunc=left.copy();
-		else
-			this.leftFunc=null;
-		if(this.right()!=null)
-			this.rightFunc=right.copy();
-		else
-			this.rightFunc=null;
-		this.op=new_op;	*/
 	}
 	/**
 	 * function to convert a string representing an operation to its enum value
@@ -273,6 +270,9 @@ public class ComplexFunction implements complex_function{
 	public Operation getOp() {
 		return this.op;
 	}
+	/**This function calculates a complex function of type y=f(x)
+	 * @return the value of f(x)
+	 */
 	@Override
 	public double f(double x) {
 		switch(this.op) {
@@ -294,12 +294,11 @@ public class ComplexFunction implements complex_function{
 			try {
 				throw new RuntimeException("ERR this operation is undefined");
 			}catch (Exception e) {
-				//	System.out.println("ERR this operation is undefined");
+				System.out.println("ERR this operation is undefined");
 				e.printStackTrace();
 				return Double.NaN;
 			}
 		}
-
 	}
 	/**
 	 * creates a function from a string
@@ -333,52 +332,8 @@ public class ComplexFunction implements complex_function{
 			return pol;
 		}
 	}
-
-	//	int counterForStart=0, counterForEnd=0, CounterForComma=0;
-	//	s.toLowerCase();
-	//	for (int i = 0; i < s.length(); i++) {
-	//		if (s.charAt(i)=='(')
-	//			counterForStart++;
-	//		if (s.charAt(i)==')')
-	//			counterForEnd++;
-	//		if (s.charAt(i)==',')
-	//			CounterForComma++;
-	//	}
-	//	if (counterForEnd==0 && counterForStart==0 && CounterForComma==0) {
-	//		Polynom p=new Polynom (s.toString());
-	//		return p;
-	//	}
-	//	try {
-	//		if (counterForEnd!=counterForStart || CounterForComma!=counterForEnd) {
-	//			throw new RuntimeException("ERR the expresstion is invalid");
-	//		}
-	//		/*		if (CounterForComma==0 && counterForEnd==1 && counterForStart==1) {
-	//			String strForOp = s.substring(0, s.indexOf('('));
-	//			this.op=operatorBuilder(strForOp);			
-	//			this.leftFunc=new Polynom(s.substring(s.indexOf('(')+1,s.indexOf(')')));
-	//			this.rightFunc=null;
-	//			if (!this.leftFunc.equals(null) && !this.op.equals(Operation.None)){
-	//				//	ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
-	//				throw new RuntimeException("ERR both the right function and the operation shpuld be null");
-	//			}
-	//		}
-	//		 */	}catch (Exception e) {
-	//			 e.printStackTrace();
-	//		 }
-	//	/*	if (s.charAt(0)!='p'&& s.charAt(0)!='m'&& s.charAt(0)!='d'&& s.charAt(0)!='c') {
-	//		String strForOpNotFirst=s.substring(s.indexOf(',')+1, s.indexOf('('));
-	//		this.op=operatorBuilder(strForOpNotFirst);
-	//	}
-	//	else {*/
-	//	String strForOp = s.substring(0, s.indexOf('('));
-	//	this.op=operatorBuilder(strForOp);	
-	//	this.leftFunc=initFromString(s.substring(s.indexOf('(')+1, s.indexOf(',')));
-	//	this.rightFunc=initFromString(s.substring(s.indexOf(',')+1,s.indexOf(')')));
-	//	ComplexFunction cf=new ComplexFunction(this.leftFunc,this.rightFunc,this.op);
-	//	return cf;
-	//}
 	/**
-	 * copies a function
+	 * deep copies a function
 	 * @return the copy of the asked function
 	 */
 	@Override
@@ -425,7 +380,7 @@ public class ComplexFunction implements complex_function{
 		return true;
 	}
 	/**
-	 * prints to screen a complex function
+	 * prints to screen this complex function
 	 */
 	public String toString() {
 		switch(this.op) {

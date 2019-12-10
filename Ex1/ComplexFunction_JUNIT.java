@@ -1,8 +1,6 @@
 package Ex1;
 
 import static org.junit.Assert.*;
-/*import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;*/
 import org.junit.jupiter.api.Test;
 
 class ComplexFunction_JUNIT {
@@ -52,21 +50,22 @@ class ComplexFunction_JUNIT {
 		assertFalse("check toString function: ",!expected.equalsIgnoreCase(actuel));
 	}
 	
-	/////?????????????????
+
 	@Test
 	void testInitFromString() {
-		Polynom p1=new Polynom("x^2+3x-5");
-		Polynom p2=new Polynom("3x^2-7x");
-		ComplexFunction cf=new ComplexFunction(p1, p2, "div");
-		function cf1=cf.initFromString("plus(min(x,2x),max(3x^2+7x, 120))");
-		Polynom p3=new Polynom("x");
-		Polynom p4=new Polynom("2x");
-		Polynom p5=new Polynom("3x^2+7x");
-		Polynom p6=new Polynom("120");
-		ComplexFunction cf2=new ComplexFunction(p3, p4, "min");
-		ComplexFunction cf3=new ComplexFunction(p5, p6, "max");
-		ComplexFunction cf4=new ComplexFunction(cf2, cf3, "plus");
-		if(!cf4.equals(cf1))
+		ComplexFunction cf=new ComplexFunction(Monom.ZERO);
+		function cf1=cf.initFromString("min(x,max(mul(5,x^2),div(4+7x, 2x^3)))");
+		System.out.println(cf1);
+		Polynom p1=new Polynom("5");
+		Polynom p2=new Polynom("x^2");
+		Polynom p3=new Polynom("4+7x");
+		Polynom p4=new Polynom("2x^3");
+		Polynom p5=new Polynom("x");
+		ComplexFunction cf2=new ComplexFunction(p1, p2, "mul");
+		ComplexFunction cf3=new ComplexFunction(p3, p4, "div");
+		ComplexFunction cf4=new ComplexFunction(cf2, cf3, "max");
+		ComplexFunction cf5=new ComplexFunction(p5,cf4,"min");
+		if(!cf5.equals(cf1))
 			fail("init from string failed");
 	}
 	@Test
@@ -149,32 +148,6 @@ class ComplexFunction_JUNIT {
 		ComplexFunction cf2=new ComplexFunction(p1, p2, "mul");
 		assertTrue("check getOP function: ",cf2.getOp().equals(Operation.Times));
 	}
-//	@Test
-//	void testRightFunctionNull() {
-//		Polynom p1=new Polynom("3x^5+2x-1");
-//		Polynom p2=new Polynom("");
-//		Polynom p3=null;
-//		ComplexFunction cf=new ComplexFunction(p1, p2, "");
-//		try {
-//		ComplexFunction cf1=new ComplexFunction(p1, p2, "plus");
-//		}catch (Exception e) {
-//			fail("complex function did not need to throw an exeption");
-//
-//		}
-//		try {
-//		ComplexFunction cf2=new ComplexFunction(p1, p3, "");
-//		fail("complex function was not created");
-//
-//		}catch (Exception e) {
-//			
-//		}
-//		try {
-//		ComplexFunction cf3=new ComplexFunction(p1, p3, "mul");
-//		fail("complex function was not created");
-//		}
-//		catch (Exception e) {
-//		}
-//		
-//	}
+
 
 }
