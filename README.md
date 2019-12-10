@@ -5,7 +5,7 @@ This project represents a general Polynom: f(x) = a_1X^b_1 + a_2x^b_2 ... a_nX^b
 Each Polynom consists of a collection (Array List in our project) of monoms.
 (In our project the Polynom does not consist the chars _ , (), /  and *. )
 
-*In this project we have 4 JUNIT tests for: Polynom, Monom, ComplexFunction, Functions_GUI. We also have 7 classes:*
+*In this project we an enum for the valid operations on ComplexFunction class, and we have 4 JUNIT tests for: Polynom, Monom, ComplexFunction, Functions_GUI. We also have 7 classes:*
 
 # Monon:
  This class represents a simple "Monom" of shape ax^b, where a is a real number (the coefficient) and b (the power) is an integer (summed a nonnegative). <br />
