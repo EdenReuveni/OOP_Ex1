@@ -1,4 +1,4 @@
-# Polynom_Ex1
+# OOP_Ex1
 
 This project represents a general Polynom: f(x) = a_1X^b_1 + a_2x^b_2 ... a_nX^b_n,
  where: a_1, a_2 ... a_n are real numbers and b_1<b_2..<b_n are none negative integers (naturals).
