@@ -157,8 +157,18 @@ class MonomTest {
 	@Test
 	void testToString() {
 		this.monomAc = new Monom(this.monomEx.toString()); 
-		assertTrue("Checks the coefficients: ", monomAc.get_coefficient()==this.monomEx.get_coefficient());
-		assertTrue("Checks the powers: ", monomAc.get_power()==this.monomEx.get_power());
-		
+		assertTrue("Checks the coefficients: ", monomAc.get_coefficient()==monomEx.get_coefficient());
+		assertTrue("Checks the powers: ", monomAc.get_power()==monomEx.get_power());
+
+	}
+	/**
+	 * testing the copy of function 
+	 */
+	@Test
+	void testCopy() {
+		Monom copyMon=(Monom)this.monomAc.copy(); 
+		assertTrue("Checks the coefficients: ", monomAc.get_coefficient()==copyMon.get_coefficient());
+		assertTrue("Checks the powers: ", monomAc.get_power()==copyMon.get_power());
+
 	}
 }

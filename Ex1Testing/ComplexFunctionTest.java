@@ -1,6 +1,8 @@
 package Ex1Testing;
 
 import static org.junit.Assert.*;
+/*import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;*/
 import org.junit.jupiter.api.Test;
 
 import Ex1.ComplexFunction;
@@ -11,7 +13,9 @@ import Ex1.function;
 
 class ComplexFunctionTest {
 	public static final double EPS = 0.00001;
-
+/**
+ * Testing left() function.
+ */
 	@Test
 	void testLeft() {
 		Monom m1 = new Monom(2,3);
@@ -24,6 +28,9 @@ class ComplexFunctionTest {
 			assertTrue(m.equals(m1));
 		}
 	}
+	/**
+	 * Testing right() function.
+	 */
 	@Test
 	void testRight() {
 		Monom m1 = new Monom(2,3);
@@ -34,8 +41,11 @@ class ComplexFunctionTest {
 		if (f instanceof Monom) {
 			Monom m=(Monom)f;
 			assertTrue("check right function: ",m.equals(m1));
+		}
 	}
-	}
+	/**
+	 * Testing f(x) function.
+	 */
 	@Test
 	void testF() {
 		Polynom p1=new Polynom("3x^5+2x-1");
@@ -46,6 +56,9 @@ class ComplexFunctionTest {
 		if(expected!=actuel)
 			fail("f(x) test failed");
 	}
+	/**
+	 * Testing toString() function.
+	 */
 	@Test
 	void testToString() {
 		Polynom p1=new Polynom("3x^5+2x-1");
@@ -56,24 +69,29 @@ class ComplexFunctionTest {
 		assertFalse("check toString function: ",!expected.equalsIgnoreCase(actuel));
 	}
 	
-
+	/**
+	 * Testing Init From String(String) function.
+	 */
 	@Test
 	void testInitFromString() {
-		ComplexFunction cf=new ComplexFunction(Monom.ZERO);
-		function cf1=cf.initFromString("min(x,max(mul(5,x^2),div(4+7x, 2x^3)))");
-		System.out.println(cf1);
-		Polynom p1=new Polynom("5");
-		Polynom p2=new Polynom("x^2");
-		Polynom p3=new Polynom("4+7x");
-		Polynom p4=new Polynom("2x^3");
-		Polynom p5=new Polynom("x");
-		ComplexFunction cf2=new ComplexFunction(p1, p2, "mul");
-		ComplexFunction cf3=new ComplexFunction(p3, p4, "div");
-		ComplexFunction cf4=new ComplexFunction(cf2, cf3, "max");
-		ComplexFunction cf5=new ComplexFunction(p5,cf4,"min");
-		if(!cf5.equals(cf1))
+		Polynom p1=new Polynom("x^2+3x-5");
+		Polynom p2=new Polynom("3x^2-7x");
+		ComplexFunction cf=new ComplexFunction(p1, p2, "div");
+		function cf1=cf.initFromString("plus(min(x,2x),max(3x^2+7x, 120))");
+		Polynom p3=new Polynom("x");
+		Polynom p4=new Polynom("2x");
+		Polynom p5=new Polynom("3x^2+7x");
+		Polynom p6=new Polynom("120");
+		ComplexFunction cf2=new ComplexFunction(p3, p4, "min");
+		ComplexFunction cf3=new ComplexFunction(p5, p6, "max");
+		ComplexFunction cf4=new ComplexFunction(cf2, cf3, "plus");
+		if(!cf4.equals(cf1))
 			fail("init from string failed");
 	}
+	
+	/**
+	 * Testing equals(Object) function.
+	 */
 	@Test
 	void testEquals() {
 		Polynom p1=new Polynom("2x^3+3x+2");
@@ -81,9 +99,11 @@ class ComplexFunctionTest {
 		ComplexFunction cf=new ComplexFunction(p1, p2, "max");
 		ComplexFunction cf2=new ComplexFunction(p1, p2, Operation.Max);
 		assertTrue("check equals: ",cf.equals(cf2));
-			
-		}
-	
+	}
+
+	/**
+	 * Testing copy(Complex Function) function.
+	 */
 	@Test
 	void testCopy() {
 		Polynom p1=new Polynom("3x^5+2x-1");
@@ -97,6 +117,10 @@ class ComplexFunctionTest {
 		if(cfcopy.equals(cf))
 			fail("should be differente");
 	}
+	
+	/**
+	 * Testing div(function) function.
+	 */
 	@Test
 	void testDiv() {
 		Polynom p1=new Polynom("3x^5+2x-1");
@@ -105,6 +129,10 @@ class ComplexFunctionTest {
 		cf.mul(p2);
 		assertTrue("check dic function: ",cf.equals(p1));
 	}
+	
+	/**
+	 * Testing Max(function) function.
+	 */
 	@Test
 	void testMax() {
 		Polynom p1=new Polynom("x^3+x");
@@ -113,6 +141,10 @@ class ComplexFunctionTest {
 		if((cf.f(1)!=p2.f(1))|| Math.abs(cf.f(-1))!=Math.abs(p2.f(-1)))
 			fail("max failed");
 	}
+	
+	/**
+	 * Testing Min(function) function.
+	 */
 	@Test
 	void testMin() {
 		Polynom p1=new Polynom("x^3+x");
@@ -120,14 +152,27 @@ class ComplexFunctionTest {
 		ComplexFunction cf=new ComplexFunction(p1, p2, "min");
 		assertTrue(cf.f(1)==p2.f(1));
 		assertTrue(Math.abs(cf.f(-1))==Math.abs(p2.f(-1)));
+		System.out.println(cf.toString());
+		System.out.println("f(1)= "+cf.f(5));
+		cf.plus(cf);
+		System.out.println(cf.toString());
+		System.out.println("f(1)= "+cf.f(5));
 	}
+	
+	/**
+	 * Testing plus(function) function.
+	 */
 	@Test
 	void testPlus() {
 		Polynom p1=new Polynom("3x^5+2x-1");
 		Polynom p2=new Polynom("x^2-3x+11");
 		ComplexFunction cf=new ComplexFunction("plus", p1, p2);
 		assertTrue(cf.f(1)==13);
-	}	
+	}
+	
+	/**
+	 * Testing mul(function) function.
+	 */
 	@Test
 	void testMul() {
 		Polynom p1=new Polynom("3x^5+2x-1");
@@ -136,15 +181,22 @@ class ComplexFunctionTest {
 		cf.div(p2);
 		assertTrue("check mul function: ",p1.equals(cf));
 	}
+	
+	/**
+	 * Testing comp(function) function.
+	 */
 	@Test
 	void testComp() {
 		Polynom p1=new Polynom("3x^2+x");
 		Polynom p2=new Polynom("x+1");
 		ComplexFunction cf=new ComplexFunction(p1, "comp", p2);
 		assertTrue("check comp function ",cf.f(2)!=30);
-		
+
 	}
-	
+
+	/**
+	 * Testing getOp() function.
+	 */
 	@Test
 	void testGetOP() {
 		Polynom p1=new Polynom("3x^5+2x-1");
@@ -154,6 +206,20 @@ class ComplexFunctionTest {
 		ComplexFunction cf2=new ComplexFunction(p1, p2, "mul");
 		assertTrue("check getOP function: ",cf2.getOp().equals(Operation.Times));
 	}
+	/**
+	 * Testing the cases of rightFunc=null.
+	 */
+	@Test
+	void testRightFunctionNull() {
+		Polynom p1=new Polynom("3x^5+2x-1");
+		function f = null;
+		ComplexFunction cf=new ComplexFunction(p1, f,Operation.None);
+		try {
+			ComplexFunction cf1=new ComplexFunction(p1, f, "plus");
+		}catch (Exception e) {
+			fail("complex function did not need to throw an exeption");
 
+		}
+	}
 
 }

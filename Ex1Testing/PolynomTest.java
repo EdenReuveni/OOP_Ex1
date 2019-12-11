@@ -25,13 +25,13 @@ class PolynomTest {
 
 	}
 	/**
-	 * test Polynom() default constructor ;
+	 * test Polynom()  default constructor ;
 	 */
 	@Test
 	void testPolynomConstructor() {
 		Iterator<Monom>it=polynomEx.iteretor();
 		assertFalse("Checks that the polynom's arrayList is null:",it.hasNext());
-	
+		//if(!polynomAc.isZero()) fail("Polynom() constructor not working");
 	}
 	@Test
 	void testPolynomString() {
@@ -283,3 +283,4 @@ class PolynomTest {
 		}
 	}
 }
+
