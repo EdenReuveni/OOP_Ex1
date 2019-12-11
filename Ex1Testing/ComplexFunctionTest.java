@@ -131,7 +131,7 @@ class ComplexFunctionTest {
 		Polynom p2=new Polynom("x^2-3x+11");
 		ComplexFunction cf=new ComplexFunction(p1, p2, "div");
 		cf.mul(p2);
-		assertTrue("check dic function: ",cf.equals(p1));
+		assertTrue("check div function: ",cf.equals(p1));
 	}
 	
 	/**
