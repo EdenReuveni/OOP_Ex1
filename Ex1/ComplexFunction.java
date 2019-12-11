@@ -34,7 +34,6 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(function left,Operation op, function right) {
-		// TODO Auto-generated constructor stub
 		constructorHelper(left, right, op);
 	}
 	/**
@@ -45,7 +44,6 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(function left, function right, Operation op) {
-		// TODO Auto-generated constructor stub
 		constructorHelper(left, right, op);
 	}
 	/**
@@ -56,7 +54,6 @@ public class ComplexFunction implements complex_function{
 	 * @param right is the given right function
 	 */
 	public ComplexFunction(String new_op, function left, function right) {
-		// TODO Auto-generated constructor stub
 		constructorHelper(left, right, operatorBuilder(new_op));
 	}
 	/**
@@ -68,7 +65,6 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(function left, String new_op, function right) {
 		constructorHelper(left, right, operatorBuilder(new_op));
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * constructor for building a new complex function
@@ -79,7 +75,6 @@ public class ComplexFunction implements complex_function{
 	 */
 	public ComplexFunction(function left, function right, String new_op) {
 		constructorHelper(left, right, operatorBuilder(new_op));
-		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * constructor for building a new complex function from a monom
@@ -117,9 +112,7 @@ public class ComplexFunction implements complex_function{
 		}
 		else throw new RuntimeException("ERROR: The object type is invalid");
 	}
-	public ComplexFunction() {
-		// TODO Auto-generated constructor stub
-	}
+	
 	/**
 	 * constructor to build a new complax function
 	 * each constructor is using this one to fit the given parameters to this order
@@ -432,4 +425,3 @@ public class ComplexFunction implements complex_function{
 		}
 	}
 }
-
