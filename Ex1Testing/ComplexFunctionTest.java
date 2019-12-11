@@ -94,9 +94,15 @@ class ComplexFunctionTest {
 	void testEquals() {
 		Polynom p1=new Polynom("2x^3+3x+2");
 		Polynom p2=new Polynom("1.9999999x^2-x");
+		Polynom p3=new Polynom("x");
+		Polynom p4=new Polynom("x^2");
+		Polynom p5=new Polynom("1");
 		ComplexFunction cf=new ComplexFunction(p1, p2, "max");
 		ComplexFunction cf2=new ComplexFunction(p1, p2, Operation.Max);
+		ComplexFunction cf3=new ComplexFunction(p5,"div",p3);
+		ComplexFunction cf4=new ComplexFunction("div",p3,p4);
 		assertTrue("check equals: ",cf.equals(cf2));
+		assertTrue("check equals: ", cf3.f(10)==cf4.f(10));
 	}
 
 	/**
@@ -150,11 +156,6 @@ class ComplexFunctionTest {
 		ComplexFunction cf=new ComplexFunction(p1, p2, "min");
 		assertTrue(cf.f(1)==p2.f(1));
 		assertTrue(Math.abs(cf.f(-1))==Math.abs(p2.f(-1)));
-		System.out.println(cf.toString());
-		System.out.println("f(1)= "+cf.f(5));
-		cf.plus(cf);
-		System.out.println(cf.toString());
-		System.out.println("f(1)= "+cf.f(5));
 	}
 	
 	/**
