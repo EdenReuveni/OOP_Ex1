@@ -31,7 +31,6 @@ class PolynomTest {
 	void testPolynomConstructor() {
 		Iterator<Monom>it=polynomEx.iteretor();
 		assertFalse("Checks that the polynom's arrayList is null:",it.hasNext());
-		//if(!polynomAc.isZero()) fail("Polynom() constructor not working");
 	}
 	@Test
 	void testPolynomString() {
