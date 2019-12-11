@@ -174,8 +174,9 @@ public class ComplexFunction implements complex_function{
 	 * @param f1 the complex_function which will be added to this complex_function.
 	 */
 	public void plus(function f1) {
+		function temp=f1.copy();
 		this.leftFunc= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-		this.rightFunc=f1.copy();
+		this.rightFunc=temp;
 		this.op=Operation.Plus;
 	}
 	/** Multiply this complex_function with the f1 complex_function
@@ -183,9 +184,10 @@ public class ComplexFunction implements complex_function{
 	 * @param f1 the complex_function which will be multiply be this complex_function.
 	 */
 	public void mul(function f1) {
+		function temp=f1.copy();
 		ComplexFunction cf= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
 		this.leftFunc= cf.copy();
-		this.rightFunc=f1.copy();
+		this.rightFunc=temp;
 		this.op=Operation.Times;
 	}
 	/** Divides this complex_function with the f1 complex_function
@@ -193,8 +195,9 @@ public class ComplexFunction implements complex_function{
 	 * @param f1 the complex_function which will be divid this complex_function.
 	 */
 	public void div(function f1) {
+		function temp=f1.copy();
 		this.leftFunc= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-		this.rightFunc=f1.copy();
+		this.rightFunc=temp;
 		this.op=Operation.Divid;
 	}
 	/** Computes the maximum over this complex_function and the f1 complex_function
@@ -211,8 +214,9 @@ public class ComplexFunction implements complex_function{
 	 * @param f1 the complex_function which will be compared with this complex_function - to compute the minimum.
 	 */
 	public void min(function f1) {
+		function temp=f1.copy();
 		this.leftFunc= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-		this.rightFunc=f1.copy();
+		this.rightFunc=temp;
 		this.op=Operation.Min;
 	}
 	/**
@@ -220,8 +224,9 @@ public class ComplexFunction implements complex_function{
 	 * @param f1 complex function
 	 */
 	public void comp(function f1) {
+		function temp=f1.copy();
 		this.leftFunc= new ComplexFunction(this.leftFunc, this.rightFunc, this.op);
-		this.rightFunc=f1.copy();
+		this.rightFunc=temp;
 		this.op=Operation.Comp;
 	}
 	/** returns the left side of the complex function - this side should always exists (should NOT be null).
