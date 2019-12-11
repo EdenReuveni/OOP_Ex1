@@ -36,6 +36,8 @@ public class Polynom implements Polynom_able{
 		this.Pol=new ArrayList<Monom>();
 		s = s.replaceAll("X", "x");
 		s = s.replace(" ", "");
+		s = s.replace("+-", "-");
+		s = s.replace("-+", "-");
 		String temp=""; // each Monom saved in the temporary string
 		try {
 			while(s.length()!=0) {
@@ -73,6 +75,7 @@ public class Polynom implements Polynom_able{
 	 * @return the value of f(x)
 	 */
 	public double f(double x) {
+		// TODO Auto-generated method stub
 		double ans=0;
 		Iterator <Monom> it= this.iteretor();
 		while(it.hasNext())
@@ -84,6 +87,7 @@ public class Polynom implements Polynom_able{
 	 * @param p1
 	 */
 	public void add(Polynom_able p1) {
+		// TODO Auto-generated method stub
 		Iterator<Monom> it =p1.iteretor();
 		while (it.hasNext()) 
 			this.add(it.next());
@@ -96,6 +100,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public void add(Monom m1) {
+		// TODO Auto-generated method stub
 		boolean flag=false;// if we already add the Monom
 		Iterator <Monom> it= this.iteretor();
 		while(it.hasNext()&&!flag)
@@ -121,6 +126,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public void substract(Polynom_able p1) {
+		// TODO Auto-generated method stub
 		Polynom_able p2 = (Polynom_able)p1.copy();
 		p2.multiply(Monom.MINUS1);
 		add(p2);
@@ -132,6 +138,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public void multiply(Polynom_able p1) {
+		// TODO Auto-generated method stub
 		Polynom temp_pol=new Polynom();
 		Monom m;
 		Iterator <Monom> it= this.iteretor();
@@ -150,12 +157,13 @@ public class Polynom implements Polynom_able{
 		this.Pol.sort(new Monom_Comperator());
 	}
 	/**
-	 * Test if this Polynom is logically equals to obj.
-	 * @param obj is the given object
+	 * Test if this Polynom is logically equals to p1.
+	 * @param p1
 	 * @return true if this polynom represents the same function as p1
 	 */
 	@Override
 	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
 		if(obj instanceof Monom){
 			if(obj.equals(this.Pol.get(0)))
 				return true;
@@ -174,6 +182,7 @@ public class Polynom implements Polynom_able{
 			return true;
 		}
 		if(obj instanceof ComplexFunction) {
+//			ComplexFunction cf=new ComplexFunction(this);
 			return obj.equals(this);
 		}
 		return false;
@@ -206,6 +215,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public double root(double x0, double x1, double eps) {
+		// TODO Auto-generated method stub
 		if(x1<=x0)throw new RuntimeException("x1 should be higher than x0");
 		if(f(x0)*f(x1)>0)throw new RuntimeException("Got 2 points above / below X axis");
 		double mid=(x0+x1)/2;
@@ -237,6 +247,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public function copy() {
+		// TODO Auto-generated method stub
 		Polynom new_pol= new Polynom();
 		Iterator <Monom> it= this.iteretor();
 		while(it.hasNext()) 
@@ -249,6 +260,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public Polynom_able derivative() {
+		// TODO Auto-generated method stub
 		Polynom dev_pol= new Polynom();
 		Iterator <Monom> it= this.iteretor();
 		while(it.hasNext()) 
@@ -268,6 +280,7 @@ public class Polynom implements Polynom_able{
 	 * @return the approximated area above X-axis below this function bounded in the range of [x0,x1]
 	 */
 	public double area(double x0, double x1, double eps) {
+		// TODO Auto-generated method stub
 		if(eps<=0)return 0;
 		double sum = 0.0;
 		for(double i=x0;i<x1;i+=eps)
@@ -286,6 +299,7 @@ public class Polynom implements Polynom_able{
 	@Override
 	public Iterator<Monom> iteretor() {
 		return Pol.iterator();
+		// TODO Auto-generated method stub
 	}
 	/**
 	 * Multiply this Polynom by Monom m1
@@ -293,6 +307,7 @@ public class Polynom implements Polynom_able{
 	 */
 	@Override
 	public void multiply(Monom m1) {
+		// TODO Auto-generated method stub
 		Monom m=(Monom)m1.copy();
 		Iterator <Monom> it= this.iteretor();
 		while(it.hasNext()) {
@@ -320,9 +335,6 @@ public class Polynom implements Polynom_able{
 		}
 		return ans;
 	}
-	/**
-	 * init a new Polynom from a given string s
-	 */
 	@Override
 	public function initFromString(String s) {
 		return new Polynom(s);

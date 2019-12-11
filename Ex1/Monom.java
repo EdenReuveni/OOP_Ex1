@@ -66,6 +66,7 @@ public class Monom implements function{
 	 * @return true/false if the Monom equals to zero
 	 */
 	public boolean isZero() {return this.get_coefficient() == 0;}
+	// ***************** add your code below **********************
 	/**
 	 * Init a Monom from a String such as: "2x" , "3x^2","1".
 	 * @param s: a string represents a Monom
@@ -178,7 +179,21 @@ public class Monom implements function{
 		else ans=get_coefficient()+"x^"+get_power();
 		return ans;
 	}
+	// you may (always) add other methods.
 
+	//****************** Private Methods and Data *****************
+
+	//	/**
+	//	 * Checks the logically equality of this monom and m.
+	//	 *A special case: both 2 coefficients are equal to 0 then the monoms are the same no matter what the power is.
+	//	 * @param m the Monom we compare with
+	//	 * @return true- if the monoms are equal , false- the monoms are different.
+	//	 */
+	//	public boolean equals(Monom m) {
+	//		if((Math.abs(m.get_coefficient()-this.get_coefficient()))<=EPSILON&&m.get_power()==this.get_power())return true;
+	//		if(m.get_coefficient()==0&&this.get_coefficient()==0)return true;
+	//		return false;
+	//	}
 	/**
 	 * coefficient setter
 	 * @param a represents the value we want to set at the coefficient
@@ -198,17 +213,9 @@ public class Monom implements function{
 	private double _coefficient; 
 	private int _power;
 
-	/**
-	 * copy this Monom
-	 */
 	public function copy() {
 		return new Monom(this);
 	}
-	 /** Checks the logically equality of this Monom and obj.
-		 *A special case: both 2 coefficients are equal to 0 then the monoms are the same no matter what the power is.
-		 * @param m the Monom we compare with
-		 * @return true- if the monoms are equal , false- the monoms are different.
-		 */
 	public boolean equals(Object obj) {
 		if(obj instanceof Monom){
 			Monom objM= (Monom)obj;
@@ -228,9 +235,6 @@ public class Monom implements function{
 		return false;
 
 	}
-	/**
-	 * init a new Monom from a given string s
-	 */
 	public function initFromString(String s) {
 		Monom m=new Monom(s);
 		return m;

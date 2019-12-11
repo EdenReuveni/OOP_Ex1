@@ -1,5 +1,5 @@
-  
 package Ex1;
+
 
 import Ex1.complex_function;
 
@@ -99,19 +99,11 @@ public class ComplexFunction implements complex_function{
 		this.rightFunc=null;
 		this.op=Operation.None;
 	}
-	/**
-	 * constructor for building a new complex function from another complex function
-	 * @param cf is the given complex function
-	 */
 	public ComplexFunction(ComplexFunction cf) {
 		this.leftFunc=cf.leftFunc.copy();
 		this.rightFunc=cf.rightFunc.copy();
 		this.op=cf.getOp();
 	}
-	/**
-	 * constructor for building a new complex function from a function
-	 * @param f is the given function
-	 */
 	public ComplexFunction(function f) {
 		if(f instanceof Monom)
 			new ComplexFunction((Monom)f);
@@ -124,6 +116,9 @@ public class ComplexFunction implements complex_function{
 			this.op=cf.getOp();
 		}
 		else throw new RuntimeException("ERROR: The object type is invalid");
+	}
+	public ComplexFunction() {
+		// TODO Auto-generated constructor stub
 	}
 	/**
 	 * constructor to build a new complax function
@@ -270,36 +265,38 @@ public class ComplexFunction implements complex_function{
 	public Operation getOp() {
 		return this.op;
 	}
-	/**This function calculates a complex function of type y=f(x)
-	 * @return the value of f(x)
-	 */
 	@Override
 	public double f(double x) {
-		switch(this.op) {
-		case Plus:
-			return leftFunc.f(x)+rightFunc.f(x);
-		case Times:
-			return leftFunc.f(x)*rightFunc.f(x);
-		case Divid:
-			return leftFunc.f(x)/rightFunc.f(x);
-		case Min:
-			return Math.min(leftFunc.f(x), rightFunc.f(x));
-		case Max:
-			return Math.max(leftFunc.f(x), rightFunc.f(x));
-		case Comp:
-			return rightFunc.f(leftFunc.f(x));
-		case None:
-			return leftFunc.f(x);
-		default:
-			try {
-				throw new RuntimeException("ERR this operation is undefined");
-			}catch (Exception e) {
-				System.out.println("ERR this operation is undefined");
-				e.printStackTrace();
-				return Double.NaN;
+		try {
+			if(this.leftFunc!=null) {
+				switch(this.op) {
+				case Plus:
+					return leftFunc.f(x)+rightFunc.f(x);
+				case Times:
+					return leftFunc.f(x)*rightFunc.f(x);
+				case Divid:
+					return leftFunc.f(x)/rightFunc.f(x);
+				case Min:
+					return Math.min(leftFunc.f(x), rightFunc.f(x));
+				case Max:
+					return Math.max(leftFunc.f(x), rightFunc.f(x));
+				case Comp:
+					return rightFunc.f(leftFunc.f(x));
+				case None:
+					return leftFunc.f(x);
+				default:
+					throw new RuntimeException("ERR this operation " + this.op + " is undefined");
+				}
 			}
 		}
+		catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			return Double.NaN;
+		}
+		return Double.NaN;
 	}
+
 	/**
 	 * creates a function from a string
 	 * @param s is the given string
@@ -310,40 +307,57 @@ public class ComplexFunction implements complex_function{
 		int counterForStart=0, counterForEnd=0,indexcomma=-1;
 		s.toLowerCase();
 		s=s.replace(" ", "");
-		if (s.contains("(")) {
-			String[] strStart=s.split("\\(",2);//split the string into 2 parts op and the rest;
-			for (int i = 0; i < strStart[1].length(); i++) {// find the comma between the 2 functions
-				if (strStart[1].charAt(i)=='(')
-					counterForStart++;
-				if (strStart[1].charAt(i)==')')
-					counterForEnd++;
-				if ((counterForEnd-counterForStart)==0&& strStart[1].charAt(i)==',') {//found the middle comma
-					indexcomma=i;
-					break;
+		try {
+			if (s.contains("(")) {
+				String[] strStart=s.split("\\(",2);//split the string into 2 parts op and the rest;
+				for (int i = 0; i < strStart[1].length(); i++) {// find the comma between the 2 functions
+					if (strStart[1].charAt(i)=='(')
+						counterForStart++;
+					if (strStart[1].charAt(i)==')')
+						counterForEnd++;
+					if ((counterForEnd-counterForStart)==0&& strStart[1].charAt(i)==',') {//found the middle comma
+						indexcomma=i;
+						break;
+					}
 				}
+
+				Operation op=operatorBuilder(strStart[0]);
+				if(op.equals(Operation.Error))
+					throw new RuntimeException();
+				String leftFunc=strStart[1].substring(0,indexcomma);
+				String rightFunc=strStart[1].substring(indexcomma+1,strStart[1].length()-1);
+				return new ComplexFunction(initFromString(leftFunc), initFromString(rightFunc),op);
 			}
-			Operation op=operatorBuilder(strStart[0]);
-			String leftFunc=strStart[1].substring(0,indexcomma);
-			String rightFunc=strStart[1].substring(indexcomma+1,strStart[1].length()-1);
-			return new ComplexFunction(initFromString(leftFunc), initFromString(rightFunc),op);
+			else {
+				Polynom pol=new Polynom(s);
+				return pol;
+			}
 		}
-		else {
-			Polynom pol=new Polynom(s);
-			return pol;
+		catch(Exception e)
+		{
+			System.out.println("Error: The function "+ s +" is invalid!");
+			return new ComplexFunction(null, null,Operation.None);
 		}
+
 	}
 	/**
-	 * deep copies a function
+	 * copies a function
 	 * @return the copy of the asked function
 	 */
 	@Override
 	public function copy() {
 		ComplexFunction cf;
-		if(this.rightFunc==null)
-			cf= new ComplexFunction(this.leftFunc.copy(),null, this.getOp());
-		else
-			cf= new ComplexFunction(this.leftFunc.copy(), this.rightFunc.copy(), this.getOp());
-		return cf;
+		try {
+			if(this.rightFunc==null)
+				cf= new ComplexFunction(this.leftFunc.copy(),null, this.getOp());
+			else
+				cf= new ComplexFunction(this.leftFunc.copy(), this.rightFunc.copy(), this.getOp());
+			return cf;
+		}
+		catch(Exception e) {
+			return null;
+		}
+
 	}
 	/**
 	 * checks if two Objects are logically equals
@@ -380,30 +394,37 @@ public class ComplexFunction implements complex_function{
 		return true;
 	}
 	/**
-	 * prints to screen this complex function
+	 * prints to screen a complex function
 	 */
 	public String toString() {
-		switch(this.op) {
-		case Plus:
-			return "plus("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
-		case Times:
-			return "mul("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
-		case Divid:
-			return "div("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
-		case Min:
-			return "min("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
-		case Max:
-			return "max("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
-		case Comp:
-			return "comp("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
-		case None:
-			return this.leftFunc.toString();
-		default:
-			try {
-				throw new RuntimeException("ERR this operation is undefined");
-			}catch (Exception e) {
-				return "ERR this operation is undefined";
+		try {
+			if(this.leftFunc.toString()!=null) {
+				switch(this.op) {
+				case Plus:
+					return "plus("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
+				case Times:
+					return "mul("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
+				case Divid:
+					return "div("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
+				case Min:
+					return "min("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
+				case Max:
+					return "max("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
+				case Comp:
+					return "comp("+this.leftFunc.toString()+","+this.rightFunc.toString()+")";
+				case None:
+					return this.leftFunc.toString();
+				default:
+					throw new RuntimeException("ERR this operation " +this.op+ " is undefined");
+				}
 			}
+			else 
+				return null;
+
+		}
+		catch (Exception e) {
+			return null;
 		}
 	}
 }
+

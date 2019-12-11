@@ -21,13 +21,8 @@ import com.google.gson.*;
 public class Functions_GUI implements functions{
 
 	private ArrayList<function> colFunc;
-	public static Color[] Colors = {Color.blue, Color.cyan, Color.MAGENTA, Color.ORANGE, 
-			Color.red, Color.GREEN, Color.PINK};
-	public Functions_GUI(Functions_GUI c) {
 
-	}
 	public Functions_GUI() {
-
 		this.colFunc=new ArrayList<function>();
 	}
 	@Override
@@ -62,7 +57,10 @@ public class Functions_GUI implements functions{
 
 	@Override
 	public boolean add(function e) {
-		return colFunc.add(e);
+		if(!(""+e).contains("null"))
+			return colFunc.add(e);
+		return false;
+
 	}
 
 	@Override
@@ -96,6 +94,12 @@ public class Functions_GUI implements functions{
 	public void clear() {
 		colFunc.clear();		
 	}
+	
+	/**
+	 * Init a new collection of functions from a file
+	 * @param file - the file name
+	 * @throws IOException if the file does not exists of unreadable (wrong format)
+	 */
 	@Override
 	public void initFromFile(String file) throws IOException {
 		// TODO Auto-generated method stub
@@ -108,7 +112,10 @@ public class Functions_GUI implements functions{
 				String line = "";
 				while ((line = br.readLine()) != null) {
 					ComplexFunction f =new ComplexFunction(new Monom("0"));
-					this.colFunc.add(f.initFromString(line));
+					function fx;
+					fx=	f.initFromString(line);
+					if(!(""+fx).contains("null"))// check if the function is valid
+						colFunc.add(fx);
 				}
 				br.close();
 			} 
@@ -121,7 +128,11 @@ public class Functions_GUI implements functions{
 		}
 
 	}
-
+	/**
+	 * 
+	 * @param file - the file name
+	 * @throws IOException if the file is not writable
+	 */
 	@Override
 	public void saveToFile(String file) throws IOException {
 		// TODO Auto-generated method stub
@@ -143,10 +154,19 @@ public class Functions_GUI implements functions{
 			return;
 		}
 	}
-
+	/**
+	 * Draws all the functions in the collection in a GUI window using the
+	 * given parameters for the GUI windo and the range & resolution
+	 * @param width - the width of the window - in pixels
+	 * @param height - the height of the window - in pixels
+	 * @param rx - the range of the horizontal axis
+	 * @param ry - the range of the vertical axis
+	 * @param resolution - the number of samples with in rx: the X_step = rx/resulution
+	 */
 	@Override
 	public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
-
+		Color[] Colors = {Color.blue, Color.cyan, Color.MAGENTA, Color.ORANGE, 
+				Color.red, Color.GREEN, Color.PINK};
 		int n = resolution;
 		StdDraw.setCanvasSize(width, height);
 		int size = colFunc.size();
@@ -166,42 +186,52 @@ public class Functions_GUI implements functions{
 		StdDraw.setYscale(ry.get_min(), ry.get_max());
 
 		for(double xl=rx.get_min();xl<=rx.get_max();xl++) {
-			StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-			StdDraw.setPenRadius(0.002);
+			StdDraw.setPenColor(Color.gray);
+			StdDraw.setPenRadius(0.0005);
 			StdDraw.line(xl,ry.get_max(), xl,ry.get_min());
-			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.setPenColor(Color.black);
 			String s=""+(int)xl;
-			StdDraw.text(xl,-0.5 ,s);
+			Font font= new Font("David", Font.BOLD,20);
+			StdDraw.setFont(font);
+			StdDraw.text(xl,-0.4 ,s);
 		}
 
 		for(double yl=ry.get_min();yl<=ry.get_max();yl++) {
-			StdDraw.setPenColor(StdDraw.LIGHT_GRAY);
-			StdDraw.setPenRadius(0.002);
+			StdDraw.setPenColor(Color.gray);
+			StdDraw.setPenRadius(0.0005);
 			StdDraw.line(rx.get_min(),yl,rx.get_max(),yl);
-			StdDraw.setPenColor(StdDraw.BLACK);
+			StdDraw.setPenColor(Color.black);
 			String s=""+(int)yl;
-			StdDraw.text(-0.5,yl ,s);
-
+			StdDraw.text(-0.4,yl ,s);
 		}
 		//draw x axis and y axis
-		StdDraw.setPenColor(StdDraw.BLACK);
+		StdDraw.setPenColor(Color.black);
 		StdDraw.setPenRadius(0.005);
 		StdDraw.line(rx.get_min(),0, rx.get_max(),0);
 		StdDraw.line(0,ry.get_min(), 0,ry.get_max());
 
-
 		// plot the approximation to the function
 		for(int a=0;a<size;a++) {
 			int c = a%Colors.length;
-			StdDraw.setPenRadius(0.003);
+			StdDraw.setPenRadius(0.004);
 			StdDraw.setPenColor(Colors[c]);
-			System.out.println(a+") "+Colors[a]+"  f(x)= "+colFunc.get(a));
+			System.out.println(a+") "+Colors[c]+"  f(x)= "+colFunc.get(a));
 			for (int i = 0; i < n; i++) {
 				StdDraw.line(x[i], yy[a][i], x[i+1], yy[a][i+1]);
 			}
-		}	
+		}
 	}
-
+	/**
+	 * Draw Function with default parameters.
+	 */
+	public void drawFunctions() {
+		this.drawFunctions(1000, 600, new Range(-10,10), new Range (-5,15), 200);
+	}
+	/**
+	 * Draws all the functions in the collection in a GUI window using the given JSON file
+	 * @param json_file - the file with all the parameters for the GUI window. 
+	 * Note: is the file id not readable or in wrong format should use default values. 
+	 */
 	@Override
 	public void drawFunctions(String json_file) {
 		Gson gson = new Gson();			
