@@ -102,10 +102,6 @@ class MonomTest {
 		this.monomAc.add(monomAc);
 		assertTrue("Checks the coefficients: ", (2*monomEx.get_coefficient())==monomAc.get_coefficient());
 		assertTrue("Checks the powers: ", monomAc.get_power()==monomEx.get_power());
-		/*	if(monomAc.get_coefficient() != 6)
-			fail("The add function is not working well, the coefficient value not as the excepted value  ");
-		if(monomAc.get_power() != 3 )
-			fail("The add function is not working well, the power value not as the excepted value  ");*/
 	}
 	/**
 	 * testing Multiply() function 
@@ -117,11 +113,7 @@ class MonomTest {
 		this.monomAc.multipy(new Monom(3,5));
 		assertTrue("Checks the coefficients: ", monomAc.get_coefficient()==excepted_coefficient);
 		assertTrue("Checks the powers: ", monomAc.get_power()==excepted_power);
-		/*if(monomAc.get_coefficient() != excepted_coefficient)
-			fail("The Multiply function is not working well, the coefficient value not as the excepted value  ");
-		if(monomAc.get_power() != excepted_power )
-			fail("The Multiply function is not working well, the power value not as the excepted value  ");
-		 */
+		
 	}
 	/**
 	 * testing equals(Monom) function 
