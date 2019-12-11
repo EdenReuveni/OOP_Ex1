@@ -112,9 +112,10 @@ public class ComplexFunction implements complex_function{
 		}
 		else throw new RuntimeException("ERROR: The object type is invalid");
 	}
-	
+	public ComplexFunction() {
+	}
 	/**
-	 * constructor to build a new complax function
+	 * constructor for building a new complax function
 	 * each constructor is using this one to fit the given parameters to this order
 	 * (left, right, operator) 
 	 * @param left is the given left function
