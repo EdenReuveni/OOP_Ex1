@@ -1,9 +1,14 @@
 # OOP_Ex1
 
-This project represents a general Polynom: f(x) = a_1X^b_1 + a_2x^b_2 ... a_nX^b_n,
- where: a_1, a_2 ... a_n are real numbers and b_1<b_2..<b_n are none negative integers (naturals).
-Each Polynom consists of a collection (Array List in our project) of monoms.
-(In our project the Polynom does not consist the chars _ , (), /  and *. )
+This project represents a complex function that have a left and right branches, with an operator in the middle.
+each branch can be a complex function by itself.
+
+The complex function can include a general Polynom: f(x) = a_1X^b_1 + a_2x^b_2 ... a_nX^b_n, where: a_1, a_2 ... a_n are real numbers and b_1<b_2..<b_n are none negative integers (naturals). Each Polynom consists of a collection (Array List in our project) of Monoms. (In our project the Polynom does not consist the chars _ , (), / and *. )
+
+# Authors:
+
+* Eden Reuveni
+* Noa Aizer
 
 *In this project we have an enum for the 8 possible operations on ComplexFunction class, as well as 4 JUNIT tests for: Polynom, Monom, ComplexFunction, Functions_GUI. We also have 7 classes*
 
@@ -24,14 +29,13 @@ This class is an implemention of complex_function interface.<br />
 Each complex function have these three fields: leftFunc, rightFunc, op.<br />
  Each branch can be a complex function by itself.<br />
 
-  # Functions_GUI:
+# Functions_GUI:
   This class is an implemention of functions interface.<br />
   It's consistong of a collection (Array List in our project) of functions.<br />
   The class have an array of colors, in which it will draw the functions.<br />
+   
   
- 
-  
-  # Parameters:
+# Parameters:
  This class represents the parameters a function in Function_GUI<br />
  The parameters are: width, Height, Range_X, Range_Y and Resolution.<br />
  
