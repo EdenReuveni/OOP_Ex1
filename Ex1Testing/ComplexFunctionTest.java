@@ -102,7 +102,7 @@ class ComplexFunctionTest {
 		ComplexFunction cf3=new ComplexFunction(p5,"div",p3);
 		ComplexFunction cf4=new ComplexFunction("div",p3,p4);
 		assertTrue("check equals: ",cf.equals(cf2));
-		assertTrue("check equals: ", cf3.f(10)==cf4.f(10));
+		assertTrue("check equals with a value: ", cf3.f(1000)==cf4.f(1000));
 	}
 
 	/**
