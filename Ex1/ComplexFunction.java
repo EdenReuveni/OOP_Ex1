@@ -112,10 +112,12 @@ public class ComplexFunction implements complex_function{
 		}
 		else throw new RuntimeException("ERROR: The object type is invalid");
 	}
+	
 	public ComplexFunction() {
 	}
+
 	/**
-	 * constructor for building a new complax function
+	 * constructor to build a new complax function
 	 * each constructor is using this one to fit the given parameters to this order
 	 * (left, right, operator) 
 	 * @param left is the given left function
@@ -124,15 +126,15 @@ public class ComplexFunction implements complex_function{
 	 */
 	private void constructorHelper(function left, function right, Operation new_op) {
 		if (right==null && new_op.equals(Operation.None)) {
-			this.leftFunc=left;
+			this.leftFunc=left.copy();
 			this.rightFunc=right;
 			this.op=new_op;
 		}
 		else if (right!=null && new_op.equals(Operation.None)) 
 			throw new RuntimeException("ERROR: Right function should be null");
 		else {	
-			this.leftFunc=left;
-			this.rightFunc=right;
+			this.leftFunc=left.copy();
+			this.rightFunc=right.copy();
 			this.op=new_op;
 		}
 	}
@@ -280,7 +282,7 @@ public class ComplexFunction implements complex_function{
 				case Max:
 					return Math.max(leftFunc.f(x), rightFunc.f(x));
 				case Comp:
-					return rightFunc.f(leftFunc.f(x));
+					return leftFunc.f(rightFunc.f(x));
 				case None:
 					return leftFunc.f(x);
 				default:
