@@ -189,7 +189,7 @@ class ComplexFunctionTest {
 		Polynom p1=new Polynom("3x^2+x");
 		Polynom p2=new Polynom("x+1");
 		ComplexFunction cf=new ComplexFunction(p1, "comp", p2);
-		assertTrue("check comp function ",cf.f(2)!=30);
+		assertTrue("check comp function ",cf.f(2)!=18);
 
 	}
 
@@ -215,9 +215,8 @@ class ComplexFunctionTest {
 		ComplexFunction cf=new ComplexFunction(p1, f,Operation.None);
 		try {
 			ComplexFunction cf1=new ComplexFunction(p1, f, "plus");
+			fail("complex function did not throw an exeption");
 		}catch (Exception e) {
-			fail("complex function did not need to throw an exeption");
-
 		}
 	}
 
