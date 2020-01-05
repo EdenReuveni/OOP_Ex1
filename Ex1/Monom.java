@@ -47,7 +47,7 @@ public class Monom implements function{
 	}
 	/** 
 	 * this method calculates the derivative Monom.
-	 * @return the Monom’s derivative.
+	 * @return the Monom derivative.
 	 */
 	public Monom derivative() {
 		if(this.get_power()==0) {return getNewZeroMonom();}
